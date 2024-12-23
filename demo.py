@@ -17,13 +17,13 @@ async def create_plot():
     plt.title("Sample Plot")
     plt.xlabel("X axis")
     plt.ylabel("Y axis")
-    
+
     # Save plot to bytes buffer
     buf = io.BytesIO()
-    plt.savefig(buf, format='png')
+    plt.savefig(buf, format="png")
     buf.seek(0)
     plt.close()  # Close the figure to free memory
-    
+
     return buf
 
 
@@ -41,13 +41,10 @@ async def main(message: cl.Message):
     """
     # Create a plot and get its bytes
     plot_bytes = await create_plot()
-    
+
     # Create an image element from the plot bytes
     image = cl.Image(
-        content=plot_bytes.getvalue(),
-        name="plot",
-        display="inline",
-        size="large"
+        content=plot_bytes.getvalue(), name="plot", display="inline", size="large"
     )
 
     # Call the tool
@@ -55,6 +52,5 @@ async def main(message: cl.Message):
 
     # Send a message with both text and plot
     await cl.Message(
-        content=f"{tool_res}\nHere's a plot for you!",
-        elements=[image]
+        content=f"{tool_res}\nHere's a plot for you!", elements=[image]
     ).send()
