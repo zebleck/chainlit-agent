@@ -1,0 +1,14 @@
+[project]
+name = "chainlit-swarm"
+version = "0.1.0"
+description = "A chat interface combining Chainlit's UI capabilities with Open-Swarm's agent system"
+dependencies = [
+    "chainlit",
+    "pyodbc",
+    "pydantic==2.10.1",
+    "matplotlib"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build" 
