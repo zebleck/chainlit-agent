@@ -6,7 +6,8 @@ dependencies = [
     "chainlit",
     "pyodbc",
     "pydantic==2.10.1",
-    "matplotlib"
+    "matplotlib",
+    "selenium"
 ]
 
 [build-system]
