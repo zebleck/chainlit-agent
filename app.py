@@ -3,16 +3,17 @@ from swarm import Swarm
 from agents.file_agent import FileAgent
 from agents.sql_agent import SQLAgent
 from agents.selenium_agent import SeleniumAgent
+from agents.cli_agent import CLIAgent
 import os
 
 # Initialize Swarm client
 client = Swarm()
 
 # Create agents
-selenium_agent = SeleniumAgent()
+cli_agent = CLIAgent()
 
 # Choose which agent to use (you can modify this based on your needs)
-agent = selenium_agent.create_agent()
+agent = cli_agent.create_agent()
 
 # Store conversation history
 conversation_history = {}
@@ -42,4 +43,4 @@ async def main(message: cl.Message):
 
 @cl.on_stop
 def on_stop():
-    selenium_agent.close()
+    cli_agent.close()
