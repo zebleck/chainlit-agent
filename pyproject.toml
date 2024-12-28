@@ -7,9 +7,10 @@ dependencies = [
     "pyodbc",
     "pydantic==2.10.1",
     "matplotlib",
-    "selenium"
+    "selenium",
+    "swarm @ git+https://github.com/marcusschiesser/open-swarm.git"
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build" 
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta" 

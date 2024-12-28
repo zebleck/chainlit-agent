@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - /app/__pycache__
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ODBC_CONNECTION_STRING=${ODBC_CONNECTION_STRING}
+      - ADMIN_QUERY=${ADMIN_QUERY}
+    command: chainlit run app.py --host 0.0.0.0 --port 8000 

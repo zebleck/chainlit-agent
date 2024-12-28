@@ -123,6 +123,8 @@ class CLIAgent:
         display_name = f"🔧 Run Command: {command}"
         cl.Step(name=display_name, type="tool")
 
+        command = command.encode("utf-8").decode("unicode_escape")
+
         try:
             # Handle cd commands specially
             if command.strip().startswith('cd '):
