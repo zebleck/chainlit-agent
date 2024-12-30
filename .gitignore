@@ -2,3 +2,4 @@
 .venv
 .chainlit
 __pycache__
+.aider*
