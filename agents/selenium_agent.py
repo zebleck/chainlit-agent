@@ -8,6 +8,8 @@ from selenium.common.exceptions import TimeoutException, WebDriverException
 from typing import Dict, List, Any, Optional
 import asyncio
 import json
+from datetime import datetime
+import os
 
 
 class SeleniumAgent:
@@ -17,6 +19,7 @@ class SeleniumAgent:
         # self.options.add_argument('--headless')  # Run in headless mode
         self.options.add_argument("--no-sandbox")
         self.options.add_argument("--disable-dev-shm-usage")
+        self.options.add_argument("--start-maximized")  # Start browser maximized
         self.driver = None
 
     def _ensure_driver(self):
@@ -160,6 +163,35 @@ class SeleniumAgent:
         except WebDriverException as e:
             return f"Error getting page source: {str(e)}"
 
+    @cl.step(type="tool")
+    async def take_screenshot(self, filename: Optional[str] = None) -> str:
+        """Take a screenshot of the current page
+
+        Args:
+            filename: Optional custom filename for the screenshot.
+                     If not provided, will generate timestamp-based filename.
+        """
+        display_name = "📸 Take Screenshot"
+        cl.Step(name=display_name, type="tool")
+
+        try:
+            self._ensure_driver()
+
+            # Generate filename if not provided
+            if not filename:
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"screenshot_{timestamp}.png"
+
+            # Ensure screenshots directory exists
+            os.makedirs("screenshots", exist_ok=True)
+            filepath = os.path.join("screenshots", filename)
+
+            # Take screenshot
+            self.driver.save_screenshot(filepath)
+            return f"Screenshot saved successfully: {filepath}"
+        except WebDriverException as e:
+            return f"Error taking screenshot: {str(e)}"
+
     # Create wrapper functions for non-async calls
     def _navigate_to(self, url: str) -> str:
         return asyncio.run(self.navigate_to(url))
@@ -182,6 +214,9 @@ class SeleniumAgent:
     def _get_page_source(self, unused_param: str = None) -> str:
         return asyncio.run(self.get_page_source(unused_param))
 
+    def _take_screenshot(self, filename: Optional[str] = None) -> str:
+        return asyncio.run(self.take_screenshot(filename))
+
     def create_agent(self) -> Agent:
         """Create and return a Swarm Agent with Selenium capabilities"""
         return Agent(
@@ -201,6 +236,7 @@ class SeleniumAgent:
                 self._input_text,
                 self._get_element_attribute,
                 self._get_page_source,
+                self._take_screenshot,
             ],
         )
 

@@ -3,12 +3,13 @@ import threading
 import queue
 import time
 
+
 def test_process_output():
     print("Starting test...")
-    
+
     # Create a queue for output
     output_queue = queue.Queue()
-    
+
     # Function to read output
     def read_output(process):
         while True:
@@ -29,13 +30,13 @@ def test_process_output():
         stderr=subprocess.STDOUT,
         universal_newlines=True,
         bufsize=1,
-        cwd="/home/zebleck/github/Cosmos/Cosmos-FrontEnd"  # Change this to your project path
+        cwd="/home/zebleck/github/Cosmos/Cosmos-FrontEnd",  # Change this to your project path
     )
-    
+
     # Start output reading thread
     thread = threading.Thread(target=read_output, args=(process,), daemon=True)
     thread.start()
-    
+
     # Monitor output for a while
     try:
         print("Monitoring output...")
@@ -55,5 +56,6 @@ def test_process_output():
         process.wait(timeout=5)
         print("Test finished!")
 
+
 if __name__ == "__main__":
-    test_process_output() 
+    test_process_output()
